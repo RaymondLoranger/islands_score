@@ -12,35 +12,44 @@ defmodule Islands.Score do
   """
 
   alias __MODULE__
-  alias Islands.{Board, Island}
+  alias Islands.{Board, Game, Island, Player, PlayerID}
+
+  @player_ids [:player1, :player2]
 
   @derive [Poison.Encoder]
   @derive Jason.Encoder
-  @enforce_keys [:hits, :misses, :forested_types]
-  defstruct [:hits, :misses, :forested_types]
+  @enforce_keys [:name, :gender, :hits, :misses, :forested_types]
+  defstruct [:name, :gender, :hits, :misses, :forested_types]
 
-  @type forested_types :: [Island.type()]
-  @type hits :: non_neg_integer
-  @type misses :: non_neg_integer
-  @type t :: %Score{hits: hits, misses: misses, forested_types: forested_types}
+  @type t :: %Score{
+          name: String.t(),
+          gender: Player.gender(),
+          hits: non_neg_integer,
+          misses: non_neg_integer,
+          forested_types: [Island.type()]
+        }
 
-  @doc """
-  Creates a `score` struct for the _Game of Islands_.
+  @spec board_score(Game.t(), PlayerID.t()) :: t
+  def board_score(%Game{} = game, player_id) when player_id in @player_ids do
+    player = game[player_id]
+    board = player.board
+    new(player, board)
+  end
 
-  ## Examples
+  @spec guesses_score(Game.t(), PlayerID.t()) :: t
+  def guesses_score(%Game{} = game, player_id) when player_id in @player_ids do
+    opponent = game[Game.opponent_id(player_id)]
+    board = opponent.board
+    new(opponent, board)
+  end
 
-      iex> alias Islands.{Board, Score}
-      iex> %Score{
-      ...>   hits: hits,
-      ...>   misses: misses,
-      ...>   forested_types: forested_types
-      ...> } = Board.new() |> Score.new()
-      iex> {hits, misses, forested_types}
-      {0, 0, []}
-  """
-  @spec new(Board.t()) :: t
-  def new(%Board{} = board) do
+  ## Private functions
+
+  @spec new(Player.t(), Board.t()) :: t
+  defp new(player, board) do
     %Score{
+      name: player.name,
+      gender: player.gender,
       hits: Board.hits(board),
       misses: Board.misses(board),
       forested_types: Board.forested_types(board)

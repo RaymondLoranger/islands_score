@@ -1,7 +1,7 @@
 defmodule Islands.ScoreTest do
   use ExUnit.Case, async: true
 
-  alias Islands.{Board, Coord, Island, Score}
+  alias Islands.{Board, Coord, Game, Island, Score}
 
   doctest Score
 
@@ -33,16 +33,29 @@ defmodule Islands.ScoreTest do
     {:miss, :none, :no_win, board} = Board.guess(board, s_shape_coord)
     {:hit, :none, :no_win, board} = Board.guess(board, square_coord)
 
-    score = Score.new(board)
+    this = self()
+    game = Game.new("Eden", "Adam", :m, this)
+    game = Game.update_board(game, :player1, board)
+    score = Score.board_score(game, :player1)
 
-    poison = ~s<{\"misses\":1,\"hits\":4,\"forested_types\":[\"dot\"]}>
-    jason = ~s<{\"forested_types\":[\"dot\"],\"hits\":4,\"misses\":1}>
-    decoded = %{"forested_types" => ["dot"], "hits" => 4, "misses" => 1}
+    poison =
+      ~s<{\"name\":\"Adam\",\"misses\":1,\"hits\":4,\"gender\":\"m\",\"forested_types\":[\"dot\"]}>
+
+    jason =
+      ~s<{\"forested_types\":[\"dot\"],\"gender\":\"m\",\"hits\":4,\"misses\":1,\"name\":\"Adam\"}>
+
+    decoded = %{
+      "forested_types" => ["dot"],
+      "hits" => 4,
+      "misses" => 1,
+      "gender" => "m",
+      "name" => "Adam"
+    }
 
     {:ok,
      json: %{poison: poison, jason: jason, decoded: decoded},
      score: score,
-     board: board}
+     game: game}
   end
 
   describe "A score struct" do
@@ -57,12 +70,26 @@ defmodule Islands.ScoreTest do
     end
   end
 
-  describe "Score.new/1" do
-    test "returns a `score` struct", %{board: board} do
-      assert Score.new(board) == %Score{
+  describe "Score.board_score/2" do
+    test "returns a `score` struct", %{game: game} do
+      assert Score.board_score(game, :player1) == %Score{
+               name: "Adam",
+               gender: :m,
                hits: 4,
                misses: 1,
                forested_types: [:dot]
+             }
+    end
+  end
+
+  describe "Score.guesses_score/2" do
+    test "returns a `score` struct", %{game: game} do
+      assert Score.board_score(game, :player2) == %Score{
+               name: "?",
+               gender: :f,
+               hits: 0,
+               misses: 0,
+               forested_types: []
              }
     end
   end
