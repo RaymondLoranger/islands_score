@@ -6,7 +6,7 @@ defmodule Islands.ScoreTest do
   doctest Score
 
   setup_all do
-    # See picture of the game in Functional Web Development on page 13...
+    # See Player's Board in Functional Web Development on page 13...
     {:ok, atoll_coord} = Coord.new(1, 1)
     {:ok, dot_coord} = Coord.new(9, 9)
     {:ok, l_shape_coord} = Coord.new(3, 7)
@@ -34,9 +34,10 @@ defmodule Islands.ScoreTest do
     {:hit, :none, :no_win, board} = Board.guess(board, square_coord)
 
     this = self()
-    game = Game.new("Eden", "Adam", :m, this)
-    game = Game.update_board(game, :player1, board)
-    score = Score.board_score(game, :player1)
+    eden = Game.new("Eden", "Adam", :m, this)
+    eden = Game.update_board(eden, :player1, board)
+    eden = Game.update_player(eden, :player2, "Eve", :f, this)
+    score = Score.board_score(eden, :player1)
 
     poison =
       ~s<{\"name\":\"Adam\",\"misses\":1,\"hits\":4,\"gender\":\"m\",\"forested_types\":[\"dot\"]}>
@@ -55,7 +56,7 @@ defmodule Islands.ScoreTest do
     {:ok,
      json: %{poison: poison, jason: jason, decoded: decoded},
      score: score,
-     game: game}
+     game: eden}
   end
 
   describe "A score struct" do
@@ -71,8 +72,8 @@ defmodule Islands.ScoreTest do
   end
 
   describe "Score.board_score/2" do
-    test "returns a `score` struct", %{game: game} do
-      assert Score.board_score(game, :player1) == %Score{
+    test "returns a `score` struct", %{game: eden} do
+      assert Score.board_score(eden, :player1) == %Score{
                name: "Adam",
                gender: :m,
                hits: 4,
@@ -83,9 +84,9 @@ defmodule Islands.ScoreTest do
   end
 
   describe "Score.guesses_score/2" do
-    test "returns a `score` struct", %{game: game} do
-      assert Score.board_score(game, :player2) == %Score{
-               name: "?",
+    test "returns a `score` struct", %{game: eden} do
+      assert Score.guesses_score(eden, :player1) == %Score{
+               name: "Eve",
                gender: :f,
                hits: 0,
                misses: 0,
