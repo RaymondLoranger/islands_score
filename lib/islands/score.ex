@@ -45,7 +45,17 @@ defmodule Islands.Score do
 
   ## Private functions
 
-  @spec new(Player.t(), Board.t()) :: t
+  @spec new(Player.t(), Board.t() | nil) :: t
+  defp new(player, nil) do
+    %Score{
+      name: player.name,
+      gender: player.gender,
+      hits: 0,
+      misses: 0,
+      forested_types: []
+    }
+  end
+
   defp new(player, board) do
     %Score{
       name: player.name,
