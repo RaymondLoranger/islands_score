@@ -2,13 +2,9 @@
 # │ Inspired by the book "Functional Web Development" by Lance Halvorsen. │
 # └───────────────────────────────────────────────────────────────────────┘
 defmodule Islands.Score do
-  use PersistConfig
-
-  @book_ref Application.get_env(@app, :book_ref)
-
   @moduledoc """
   Creates a `score` struct for the _Game of Islands_.
-  \n##### #{@book_ref}
+  \n##### #{Islands.Config.get(:book_ref)}
   """
 
   alias __MODULE__
