@@ -53,10 +53,11 @@ defmodule Islands.ScoreTest do
       "name" => "Adam"
     }
 
-    {:ok,
-     json: %{poison: poison, jason: jason, decoded: decoded},
-     score: score,
-     game: eden}
+    %{
+      json: %{poison: poison, jason: jason, decoded: decoded},
+      score: score,
+      game: eden
+    }
   end
 
   describe "A score struct" do
