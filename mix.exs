@@ -4,7 +4,7 @@ defmodule Islands.Score.MixProject do
   def project do
     [
       app: :islands_score,
-      version: "0.1.21",
+      version: "0.1.22",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Islands Score",
@@ -46,7 +46,9 @@ defmodule Islands.Score.MixProject do
     [
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:io_ansi_plus, "~> 0.1"},
       {:islands_board, "~> 0.1"},
+      {:islands_client_island_type, "~> 0.1"},
       {:islands_coord, "~> 0.1"},
       {:islands_game, "~> 0.1"},
       {:islands_island, "~> 0.1"},
