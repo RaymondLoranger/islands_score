@@ -4,6 +4,7 @@
 defmodule Islands.Score do
   @moduledoc """
   Creates a `score` struct for the _Game of Islands_.
+  Also formats the `score` of a player.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
   """
@@ -24,7 +25,7 @@ defmodule Islands.Score do
   defstruct [:name, :gender, :hits, :misses, :forested_types]
 
   @type t :: %Score{
-          name: String.t(),
+          name: Player.name(),
           gender: Player.gender(),
           hits: non_neg_integer,
           misses: non_neg_integer,

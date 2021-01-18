@@ -4,7 +4,7 @@ defmodule Islands.Score.MixProject do
   def project do
     [
       app: :islands_score,
-      version: "0.1.22",
+      version: "0.1.23",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Islands Score",
@@ -22,6 +22,7 @@ defmodule Islands.Score.MixProject do
   defp description do
     """
     Creates a score struct for the Game of Islands.
+    Also formats the score of a player.
     """
   end
 
