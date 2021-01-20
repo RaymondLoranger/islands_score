@@ -32,6 +32,9 @@ defmodule Islands.Score do
           forested_types: [Island.type()]
         }
 
+  @doc """
+  Creates a `score` struct from the board of a player.
+  """
   @spec board_score(Game.t(), PlayerID.t()) :: t
   def board_score(%Game{} = game, player_id) when player_id in @player_ids do
     player = game[player_id]
@@ -39,6 +42,9 @@ defmodule Islands.Score do
     new(player, board)
   end
 
+  @doc """
+  Creates a `score` struct from the board of a player's opponent.
+  """
   @spec guesses_score(Game.t(), PlayerID.t()) :: t
   def guesses_score(%Game{} = game, player_id) when player_id in @player_ids do
     opponent = game[Game.opponent_id(player_id)]
@@ -46,6 +52,9 @@ defmodule Islands.Score do
     new(opponent, board)
   end
 
+  @doc """
+  Formats the `score` of a player.
+  """
   @spec format(t, Keyword.t()) :: :ok
   def format(%Score{} = score, options) do
     {up, right} = {options[:up], options[:right]}
