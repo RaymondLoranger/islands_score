@@ -1,7 +1,6 @@
 # Islands Score
 
-Creates a `score` struct for the _Game of Islands_.
-Also formats the `score` of a player.
+A score struct and functions for the _Game of Islands_.
 
 ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
 

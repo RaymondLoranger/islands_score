@@ -7,17 +7,17 @@ defmodule Islands.ScoreTest do
 
   setup_all do
     # See Player's Board in Functional Web Development on page 13...
-    {:ok, atoll_coord} = Coord.new(1, 1)
-    {:ok, dot_coord} = Coord.new(9, 9)
-    {:ok, l_shape_coord} = Coord.new(3, 7)
-    {:ok, s_shape_coord} = Coord.new(6, 2)
-    {:ok, square_coord} = Coord.new(9, 5)
+    {:ok, atoll_origin} = Coord.new(1, 1)
+    {:ok, dot_origin} = Coord.new(9, 9)
+    {:ok, l_shape_origin} = Coord.new(3, 7)
+    {:ok, s_shape_origin} = Coord.new(6, 2)
+    {:ok, square_origin} = Coord.new(9, 5)
 
-    {:ok, atoll} = Island.new(:atoll, atoll_coord)
-    {:ok, dot} = Island.new(:dot, dot_coord)
-    {:ok, l_shape} = Island.new(:l_shape, l_shape_coord)
-    {:ok, s_shape} = Island.new(:s_shape, s_shape_coord)
-    {:ok, square} = Island.new(:square, square_coord)
+    {:ok, atoll} = Island.new(:atoll, atoll_origin)
+    {:ok, dot} = Island.new(:dot, dot_origin)
+    {:ok, l_shape} = Island.new(:l_shape, l_shape_origin)
+    {:ok, s_shape} = Island.new(:s_shape, s_shape_origin)
+    {:ok, square} = Island.new(:square, square_origin)
 
     board =
       Board.new()
@@ -27,11 +27,11 @@ defmodule Islands.ScoreTest do
       |> Board.position_island(s_shape)
       |> Board.position_island(square)
 
-    {:hit, :none, :no_win, board} = Board.guess(board, atoll_coord)
-    {:hit, :dot, :no_win, board} = Board.guess(board, dot_coord)
-    {:hit, :none, :no_win, board} = Board.guess(board, l_shape_coord)
-    {:miss, :none, :no_win, board} = Board.guess(board, s_shape_coord)
-    {:hit, :none, :no_win, board} = Board.guess(board, square_coord)
+    {:hit, :none, :no_win, board} = Board.guess(board, atoll_origin)
+    {:hit, :dot, :no_win, board} = Board.guess(board, dot_origin)
+    {:hit, :none, :no_win, board} = Board.guess(board, l_shape_origin)
+    {:miss, :none, :no_win, board} = Board.guess(board, s_shape_origin)
+    {:hit, :none, :no_win, board} = Board.guess(board, square_origin)
 
     this = self()
     eden = Game.new("Eden", "Adam", :m, this)
@@ -73,7 +73,7 @@ defmodule Islands.ScoreTest do
   end
 
   describe "Score.board_score/2" do
-    test "returns a `score` struct", %{game: eden} do
+    test "returns a score struct", %{game: eden} do
       assert Score.board_score(eden, :player1) == %Score{
                name: "Adam",
                gender: :m,
@@ -85,7 +85,7 @@ defmodule Islands.ScoreTest do
   end
 
   describe "Score.guesses_score/2" do
-    test "returns a `score` struct", %{game: eden} do
+    test "returns a score struct", %{game: eden} do
       assert Score.guesses_score(eden, :player1) == %Score{
                name: "Eve",
                gender: :f,

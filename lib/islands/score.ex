@@ -3,8 +3,9 @@
 # └───────────────────────────────────────────────────────────────────────┘
 defmodule Islands.Score do
   @moduledoc """
-  Creates a `score` struct for the _Game of Islands_.
-  Also formats the `score` of a player.
+  A score struct and functions for the _Game of Islands_.
+
+  The score struct contains the fields `name`, `gender`, `hits`, `misses` and `forested_types` representing the characteristics of a score in the _Game of Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
   """
@@ -16,7 +17,9 @@ defmodule Islands.Score do
 
   @island_type_codes ["a", "d", "l", "s", "q"]
   @player_ids [:player1, :player2]
+  @score_width 21
   @sp ANSI.cursor_right()
+  @sp_gender 2
   @symbols [f: "♀", m: "♂"]
 
   @derive [Poison.Encoder]
@@ -24,6 +27,7 @@ defmodule Islands.Score do
   @enforce_keys [:name, :gender, :hits, :misses, :forested_types]
   defstruct [:name, :gender, :hits, :misses, :forested_types]
 
+  @typedoc "A score struct for the Game of Islands"
   @type t :: %Score{
           name: Player.name(),
           gender: Player.gender(),
@@ -33,7 +37,7 @@ defmodule Islands.Score do
         }
 
   @doc """
-  Creates a `score` struct from the board of a player.
+  Creates a score struct from a player's board struct.
   """
   @spec board_score(Game.t(), PlayerID.t()) :: t
   def board_score(%Game{} = game, player_id) when player_id in @player_ids do
@@ -43,7 +47,7 @@ defmodule Islands.Score do
   end
 
   @doc """
-  Creates a `score` struct from the board of a player's opponent.
+  Creates a score struct from an opponent's board struct.
   """
   @spec guesses_score(Game.t(), PlayerID.t()) :: t
   def guesses_score(%Game{} = game, player_id) when player_id in @player_ids do
@@ -53,7 +57,7 @@ defmodule Islands.Score do
   end
 
   @doc """
-  Formats the `score` of a player.
+  Prints `score` formatted with embedded ANSI escapes.
   """
   @spec format(t, Keyword.t()) :: :ok
   def format(%Score{} = score, options) do
@@ -69,17 +73,7 @@ defmodule Islands.Score do
 
   ## Private functions
 
-  @spec new(Player.t(), Board.t() | nil) :: t
-  defp new(player, nil) do
-    %Score{
-      name: player.name,
-      gender: player.gender,
-      hits: 0,
-      misses: 0,
-      forested_types: []
-    }
-  end
-
+  @spec new(Player.t(), Board.t()) :: t
   defp new(player, board) do
     %Score{
       name: player.name,
@@ -96,9 +90,10 @@ defmodule Islands.Score do
 
   @spec player(t) :: ANSI.ansilist()
   defp player(%Score{name: name, gender: gender}) do
-    name = String.slice(name, 0, 21 - 2)
-    span = div(21 + String.length(name) + 2, 2) - 2
+    name = String.slice(name, 0, @score_width - @sp_gender)
+    span = div(@score_width + String.length(name) + @sp_gender, 2) - @sp_gender
 
+    # The "visible" width of `player/1` (ignoring ANSI escapes) is 11 to 21...
     [
       [:chartreuse_yellow, String.pad_leading(name, span)],
       [:reset, @sp, :spring_green, "#{@symbols[gender]}"]
@@ -107,6 +102,7 @@ defmodule Islands.Score do
 
   @spec top_score(t) :: ANSI.ansilist()
   defp top_score(%Score{hits: hits, misses: misses}) do
+    # The "visible" width of `top_score/1` (ignoring ANSI escapes) is 21...
     [
       [:chartreuse_yellow, "hits: "],
       [:spring_green, String.pad_leading("#{hits}", 2)],
@@ -117,6 +113,7 @@ defmodule Islands.Score do
 
   @spec bottom_score(t) :: ANSI.ansilist()
   defp bottom_score(score) do
+    # The "visible" width of `bottom_score/1` (ignoring ANSI escapes) is 20...
     [
       [:reset, :spring_green, :underline, "forested"],
       [:reset, @sp, :chartreuse_yellow, "➔", forested_codes(score)]
@@ -131,6 +128,6 @@ defmodule Islands.Score do
   end
 
   @spec attr(boolean) :: ANSI.ansilist()
-  defp attr(true = _forested?), do: [:reset, @sp, :spring_green, :underline]
-  defp attr(false = _forested?), do: [:reset, @sp, :chartreuse_yellow]
+  defp attr(_forested? = true), do: [:reset, @sp, :spring_green, :underline]
+  defp attr(_forested?), do: [:reset, @sp, :chartreuse_yellow]
 end
