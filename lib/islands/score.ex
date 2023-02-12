@@ -7,7 +7,7 @@ defmodule Islands.Score do
 
   The score struct contains the fields `name`, `gender`, `hits`, `misses` and `forested_types` representing the characteristics of a score in the _Game of Islands_.
 
-  ##### Inspired by the book [Functional Web Development](https://pragprog.com/book/lhelph/functional-web-development-with-elixir-otp-and-phoenix) by Lance Halvorsen.
+  ##### Inspired by the book [Functional Web Development](https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/) by Lance Halvorsen.
   """
 
   alias __MODULE__
