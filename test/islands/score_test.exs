@@ -40,10 +40,10 @@ defmodule Islands.ScoreTest do
     score = Score.board_score(eden, :player1)
 
     poison =
-      ~s<{"name":"Adam","misses":1,"hits":4,"gender":"m","forested_types":["dot"]}>
+      ~s<{"forested_types":["dot"],"misses":1,"hits":4,"gender":"m","name":"Adam"}>
 
     jason =
-      ~s<{"forested_types":["dot"],"gender":"m","hits":4,"misses":1,"name":"Adam"}>
+      ~s<{"name":"Adam","hits":4,"misses":1,"forested_types":["dot"],"gender":"m"}>
 
     decoded = %{
       "forested_types" => ["dot"],
