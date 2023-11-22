@@ -24,7 +24,6 @@ defmodule Islands.Score do
   @sp_gender 2
   @symbols [f: "♀", m: "♂"]
 
-  @derive [Poison.Encoder]
   @derive Jason.Encoder
   @enforce_keys [:name, :gender, :hits, :misses, :forested_types]
   defstruct [:name, :gender, :hits, :misses, :forested_types]
