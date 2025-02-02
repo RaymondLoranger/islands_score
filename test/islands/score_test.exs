@@ -39,8 +39,8 @@ defmodule Islands.ScoreTest do
     eden = Game.update_player(eden, :player2, "Eve", :f, this)
     score = Score.board_score(eden, :player1)
 
-    jason =
-      ~s<{"name":"Adam","hits":4,"misses":1,"forested_types":["dot"],"gender":"m"}>
+    encoded =
+      ~s<{"name":"Adam","gender":"m","hits":4,"misses":1,"forested_types":["dot"]}>
 
     decoded = %{
       "forested_types" => ["dot"],
@@ -50,13 +50,13 @@ defmodule Islands.ScoreTest do
       "name" => "Adam"
     }
 
-    %{json: %{jason: jason, decoded: decoded}, score: score, game: eden}
+    %{json: %{encoded: encoded, decoded: decoded}, score: score, game: eden}
   end
 
   describe "A score struct" do
-    test "can be encoded by Jason", %{score: score, json: json} do
-      assert Jason.encode!(score) == json.jason
-      assert Jason.decode!(json.jason) == json.decoded
+    test "can be encoded by JSON", %{score: score, json: json} do
+      assert JSON.encode!(score) == json.encoded
+      assert JSON.decode!(json.encoded) == json.decoded
     end
   end
 

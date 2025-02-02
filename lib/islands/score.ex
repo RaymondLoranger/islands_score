@@ -6,8 +6,8 @@ defmodule Islands.Score do
   A score struct and functions for the _Game of Islands_.
 
   The score struct contains the fields `name`, `gender`, `hits`, `misses` and
-  `forested_types` representing the characteristics of a score in the
-  _Game of Islands_.
+  `forested_types` representing the properties of a score in the _Game of
+  Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/) by Lance Halvorsen.
   """
@@ -24,7 +24,7 @@ defmodule Islands.Score do
   @sp_gender 2
   @symbols [f: "♀", m: "♂"]
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   @enforce_keys [:name, :gender, :hits, :misses, :forested_types]
   defstruct [:name, :gender, :hits, :misses, :forested_types]
 
