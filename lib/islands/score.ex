@@ -5,9 +5,15 @@ defmodule Islands.Score do
   @moduledoc """
   A score struct and functions for the _Game of Islands_.
 
-  The score struct contains the fields `name`, `gender`, `hits`, `misses` and
-  `forested_types` representing the properties of a score in the _Game of
-  Islands_.
+  The score struct contains the fields:
+
+    - `name`
+    - `gender`
+    - `hits`
+    - `misses`
+    - `forested_types`
+
+  representing the properties of a score in the _Game of Islands_.
 
   ##### Inspired by the book [Functional Web Development](https://pragprog.com/titles/lhelph/functional-web-development-with-elixir-otp-and-phoenix/) by Lance Halvorsen.
   """
@@ -60,7 +66,7 @@ defmodule Islands.Score do
   @doc """
   Prints `score` formatted with embedded ANSI escapes.
   """
-  @spec format(t, Keyword.t()) :: :ok
+  @spec format(t, keyword) :: :ok
   def format(%Score{} = score, options) do
     {up, right} = {options[:up], options[:right]}
 
