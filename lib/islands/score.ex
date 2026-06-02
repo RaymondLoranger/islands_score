@@ -23,6 +23,7 @@ defmodule Islands.Score do
   alias Islands.Client.IslandType
   alias Islands.{Board, Game, Island, Player, PlayerID}
 
+  # :atoll, :dot, :l_shape, :s_shape, :square
   @island_type_codes ["a", "d", "l", "s", "q"]
   @player_ids [:player1, :player2]
   @score_width 21
@@ -64,7 +65,7 @@ defmodule Islands.Score do
   end
 
   @doc """
-  Prints `score` formatted with embedded ANSI escapes.
+  Prints `score` formatted with embedded ANSI escape sequences.
   """
   @spec format(t, keyword) :: :ok
   def format(%Score{} = score, options) do
